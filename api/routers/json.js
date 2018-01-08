@@ -69,9 +69,19 @@ router.put('/:jsonID', (req, res, next) => {
  */
 router.delete('/:jsonID', (req, res, next) => {
     const jsonID = req.params.jsonID;
-    res.status(200).json({
-        message: "DELETE request handle"
-    })
+    if (fs.existsSync('./jsonData/'+jsonID+'.json')) {
+        fs.unlink('./jsonData/'+jsonID+'.json', (error) => {
+            if (error) {
+                throw error;
+            } else {
+                setResponseMessage(res, 200, {
+                    message: "DELETE request successfully end"
+                });
+            }
+        })
+    } else {
+        setResponseMessage(res, 404);
+    }
 });
 
 /**
